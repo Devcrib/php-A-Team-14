@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
  
 class QuadraticTests extends TestCase
 {
-    function quadratic($a, $b, $c, $root){
+    function quadratic($a, $b, $c, $root = ''){
         $precision = 3; 
     
         $numerator = $b*$b-4*$a*$c;
@@ -34,14 +34,34 @@ class QuadraticTests extends TestCase
         } 
     
         
-        if ($root == 'root1') {return $X1;}
-        if ($root == 'root2') {return $X2;}
-        if ($root == 'both') {return $X1. ' and ' .$X2;}
+        if ($root == 'X1') {return $X1;}
+        if ($root == 'X2') {return $X2;}
+        if ($root == 'both' || $root == '') {return $X1. ' and ' .$X2;}
     }
 
-    public function test_ABC_AreNotStrings()
+    public function testThatFunctionExecutesGivenProperParameters()
     {
-        $this->assertTrue(is_int($this->quadratic(is_int())));
+        $this->assertRegExp('/[0-9]/', $this->quadratic(2,4,5, 'both'));
     }
- 
+
+    public function testIncorrectParameters()
+    {
+        try{
+            $this->assertRegExp('/[0-9]/', $this->quadratic('ddf', 'fdf' , 'dfdf'));
+        } catch( Exception $e){
+            $this->assertStringStartsWith('Division by zero', $e->getMessage() );
+        }
+        
+    }
+    
+    public function testMissingArgument()
+    {
+        try{
+            $this->assertEquals('sdfsd', $this->quadratic());
+        } catch( Exception $e){
+            $this->assertStringStartsWith('Missing argument ', $e->getMessage() );
+        }
+        
+    }
+
 }

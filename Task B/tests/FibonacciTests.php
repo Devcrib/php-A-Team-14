@@ -17,5 +17,23 @@ class FibonacciTests extends TestCase
         $this->assertTrue(is_int($this->fibonacciSequence(3)));
     }
     
+    public function testPositionIsString()
+    {
+        try {
+            $this->assertTrue(is_int($this->fibonacciSequence(null)));
+        } catch (Exception $e) {
+            $this->assertEquals($e->getMessage(), "Undefined index: ");
+        }
+    }
+
+    public function testFibbyIsCalledWithoutArgument()
+    {
+        try {
+            $this->assertTrue(is_int($this->fibonacciSequence()));
+        } catch (Exception $e) {
+            $this->assertStringStartsWith('Missing argument 1 for', $e->getMessage());
+        }
+         
+    }
     
 }
